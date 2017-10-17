@@ -3,6 +3,19 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    copy: {
+      build: {
+        cwd: 'src',
+        src: [ '**' ],
+        dest: 'public',
+        expand: true
+      },
+    },
+    clean: {
+      build: {
+        src: [ 'public' ]
+      },
+    },
     jshint: {
       all: [
         '*.js',
@@ -44,39 +57,13 @@ module.exports = function(grunt) {
           dest: 'public/css/'
         }]
       }
-    },
-    replace: {
-      build: {
-        src: ['src/index.html'],
-        dest: 'public/',
-        replacements: [{
-          from: 'href="/favicon.ico',
-          to: 'href="//d2m9ubf1ape1gm.cloudfront.net/bucketlist/favicon.ico'
-        }, {
-          from: 'href="css/',
-          to: 'href="//d2m9ubf1ape1gm.cloudfront.net/bucketlist/css/'
-        }, {
-          from: 'src="img/',
-          to: 'src="//d2m9ubf1ape1gm.cloudfront.net/bucketlist/img/'
-        }, {
-          from: 'src="js/',
-          to: 'src="//d2m9ubf1ape1gm.cloudfront.net/bucketlist/js/'
-        }, {
-          from: '?_="',
-          to: [
-            '?_=',
-            new Date().getTime(),
-            '"'
-          ].join('')
-        }]
-      }
     }
   });
-
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('test', 'jshint');
 
@@ -86,8 +73,11 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'clean',
+    'copy',
     'test',
     'minify',
-    'replace:build'
   ]);
+
+  grunt.registerTask('default', ['build']);
 };

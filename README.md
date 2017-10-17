@@ -5,6 +5,23 @@ An Apache-like index for viewing the file and directory listing of an Amazon S3 
 
 __Demo__: http://bucketlist-demo.s3-website-ap-southeast-2.amazonaws.com/
 
+## Installing and deploying for SecretHub
+
+Install dependencies with:
+```
+npm install
+```
+
+Then build and deploy with (this requires the aws cli to be set up):
+```
+./deploy.sh
+```
+
+Building only can be done with:
+```
+grunt build
+```
+
 ## About
 In this repo, the ``src`` directory contains the unminified source, and
 the ``public`` directory contains the latest (minified) build. When using
